@@ -1,0 +1,7 @@
+{
+  "attachmentFileName": "attachmentFile.txt",
+  "subject": "mail for myself_",
+  "fileText": "file for attaching",
+  "filePath": "cypress/fixtures/attachmentFile.txt"
+
+}

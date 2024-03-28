@@ -1,0 +1,22 @@
+{
+  "name": "mailfence",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "runTest": "npx cypress run --headed --browser chrome",
+    "runTestHeadless": "npx cypress run --browser chrome",
+    "open": "node_modules\\.bin\\cypress open"
+  },
+  "author": "Volha Bedarava",
+  "license": "ISC",
+  "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.2.5",
+    "cypress": "^13.6.6",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-highlight": "^1.2.0",
+    "cypress-real-events": "^1.12.0",
+    "cypress-wait-until": "^3.0.1",
+    "mocha": "^10.3.0"
+  }
+}
