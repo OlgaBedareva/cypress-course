@@ -36,7 +36,6 @@ class MailPage extends BaseSectionPage {
         });
     }
 
-    // !!!!
     waitUntilEmailReceived(subject) {
         cy.get('body').then($body => {
             if ($body.find('.listSubject[title="' + subject + '"]').length) {

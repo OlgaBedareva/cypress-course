@@ -21,7 +21,6 @@ export default class BasePage {
     }
 
     logOut() {
-        console.log(this.elements)
         this.clickDropDwn()
         this.getUserMenuItem().contains('Выйти').click()
     }
