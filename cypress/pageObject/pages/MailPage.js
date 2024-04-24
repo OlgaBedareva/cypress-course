@@ -1,6 +1,12 @@
-import BaseSectionPage from "./BaseSectionPage"
+import Header from "../components/Header"
+import CommandMenu from "../components/CommandMenu"
 
-class MailPage extends BaseSectionPage {
+class MailPage {
+
+    constructor() {
+        this.header = new Header();
+        this.commandMenu = new CommandMenu();
+    }
 
     elements = {
         mailToInput: () => cy.get('#mailTo > .GCSDBRWBPL'),
@@ -9,13 +15,10 @@ class MailPage extends BaseSectionPage {
         subjectsList: () => cy.get('.listSubject'),
         sendBtn: () => cy.get('#mailSend'),
         attachedFile: () => cy.get('.GCSDBRWBKRB'),
-        contextMenuItensOfAttachedFile: () => cy.get('.GCSDBRWBGR'),
+        contextMenuItemsOfAttachedFile: () => cy.get('.GCSDBRWBGR'),
         saveDocumentBtn: () => cy.get('#dialBtn_OK'),
         treeItemLabel: () => cy.get('.treeItemLabel'),
         trashSection: () => cy.get('.GCSDBRWBDX > .treeItemLabel').contains('Trash'),
-        chooseAllBtn: () => cy.get('.icon-checkb'),
-        deleteBtn: () => cy.get('.icon16-Trash'),
-
     }
 
     typeRecipientsMail(recipientsMail) {
@@ -63,7 +66,7 @@ class MailPage extends BaseSectionPage {
     saveAttachedFileToDocuments() {
         this.elements.attachedFile().rightclick()
         cy.interceptAndWait('POST', '/gwt', 'getDirectoriesTree', 10000, () => {
-            this.elements.contextMenuItensOfAttachedFile().contains('Сохранить в документах').click()
+            this.elements.contextMenuItemsOfAttachedFile().contains('Сохранить в документах').click()
         });
         this.elements.treeItemLabel().contains("Мои документы").click()
         this.elements.saveDocumentBtn().should('be.visible').and('not.have.attr', 'disabled');
@@ -72,6 +75,10 @@ class MailPage extends BaseSectionPage {
             this.elements.saveDocumentBtn().click({ force: true });
         });
         this.elements.saveDocumentBtn().should('not.exist')
+    }
+
+    clickMailTrashBtn() {
+        this.elements.trashSection().click();
     }
 }
 

@@ -1,10 +1,10 @@
 import 'cypress-file-upload';
-import MailPage from "../pageObject/MailPage";
-import DocumentsPage from "../pageObject/DocumentsPage";
-import TrashDocumentsPage from "../pageObject/TrashDocumentsPage";
-import LoginPage from "../pageObject/LoginPage";
-import HomePage from "../pageObject/HomePage";
-import TrashMailPage from "../pageObject/TrashMailPage";
+import MailPage from "../pageObject/pages/MailPage";
+import DocumentsPage from "../pageObject/pages/DocumentsPage";
+import TrashDocumentsPage from "../pageObject/pages/TrashDocumentsPage";
+import LoginPage from "../pageObject/pages/LoginPage";
+import HomePage from "../pageObject/pages/HomePage";
+import TrashMailPage from "../pageObject/pages/TrashMailPage";
 
 Cypress.Commands.add('dragAndDrop', (drag, drop) => {
   drag.then(subject => {
@@ -86,13 +86,17 @@ Cypress.Commands.add("clearEnvironment", (login, password) => {
   cy.visit(Cypress.env('url'));
   homePage.clickSignInBtn();
   loginPage.fillInLogInFormAndSubmit(login, password);
-  mailPage.deleteAllItemsInSection()
-  mailPage.clickTrashSection('getFolderMessages')
-  trashMailPage.clearTrashSection()
-  mailPage.clickDocumentBtn()
-  documentsPage.deleteAllItemsInSection()
-  documentsPage.clickTrashSection('getDocuments')
-  trashDocumentsPage.clearTrashSection()
-  trashDocumentsPage.clickMailsBtn()
-  trashDocumentsPage.logOut();
+  mailPage.commandMenu.deleteAllItemsInSection()
+  cy.interceptAndWait('POST', '/gwt', 'getFolderMessages', 20000, () => {
+    mailPage.clickMailTrashBtn()
+  })
+  trashMailPage.listOfItemsSection.clearTrashSection()
+  mailPage.header.clickDocumentBtn()
+  documentsPage.commandMenu.deleteAllItemsInSection()
+  cy.interceptAndWait('POST', '/gwt', 'getDocuments', 20000, () => {
+    documentsPage.clickDocumentsTrashBtn()
+  })
+  trashDocumentsPage.listOfItemsSection.clearTrashSection()
+  trashDocumentsPage.header.clickMailsBtn()
+  trashDocumentsPage.header.logOut();
 });

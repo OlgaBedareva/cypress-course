@@ -1,9 +1,9 @@
 ///<reference types = 'Cypress' />
-import DocumentsPage from '../pageObject/DocumentsPage';
-import HomePage from '../pageObject/HomePage'
-import LoginPage from '../pageObject/LoginPage'
-import MailPage from '../pageObject/MailPage';
-import TrashDocumentsPage from '../pageObject/TrashDocumentsPage';
+import DocumentsPage from '../pageObject/pages/DocumentsPage';
+import HomePage from '../pageObject/pages/HomePage'
+import LoginPage from '../pageObject/pages/LoginPage'
+import MailPage from '../pageObject/pages/MailPage';
+import TrashDocumentsPage from '../pageObject/pages/TrashDocumentsPage';
 
 describe('MailFence Test', () => {
 
@@ -34,7 +34,7 @@ describe('MailFence Test', () => {
     loginPage.fillInLogInFormAndSubmit(Cypress.env('email'), Cypress.env('password'));
 
     cy.log(`Step 2.  Attach .txt file`);
-    mailPage.clickDocumentBtn()
+    mailPage.header.clickDocumentBtn()
     cy.uploadFile(this.data.attachmentFileName, documentsPage.elements.ctreateDocumentBtn(), attachedFileName);
 
     cy.log(`Step 3. Send email with attached file to yourself`);
@@ -52,11 +52,13 @@ describe('MailFence Test', () => {
     mailPage.saveAttachedFileToDocuments();
 
     cy.log(`Step 7. Open documents area`);
-    mailPage.clickDocumentBtn();
+    mailPage.header.clickDocumentBtn();
 
     cy.log(`Step 8. Move file from "Мои документы" folder to "Trash" folder by Drag'n'drop action`);
-    cy.dragAndDrop(documentsPage.elements.сreatedDocument(attachedFileName), documentsPage.elements.trashSection());
-    documentsPage.clickTrashSection('getDocuments')
+    cy.dragAndDrop(documentsPage.elements.createdDocument(attachedFileName), documentsPage.elements.trashSection());
+    cy.interceptAndWait('POST', '/gwt', 'getDocuments', 20000, () => {
+      documentsPage.clickDocumentsTrashBtn()
+    })
     trashDocumentsPage.deletedDocumentShouldBeVisible(attachedFileName);
   });
 })

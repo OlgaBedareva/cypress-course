@@ -1,17 +1,21 @@
-import BaseSectionPage from "./BaseSectionPage"
-class DocumentsPage extends BaseSectionPage {
+import Header from "../components/Header"
+import CommandMenu from "../components/CommandMenu"
+
+class DocumentsPage {
+    constructor() {
+        this.header = new Header();
+        this.commandMenu = new CommandMenu();
+    }
 
     elements = {
         ctreateDocumentBtn: () => cy.get('#new_doc > input'),
         contextMenuItem: () => cy.get('.GCSDBRWBPQ'),
-        сreatedDocument: (filename) => cy.get('.GCSDBRWBGT .GCSDBRWBAKB[title="' + filename + '"]'),
         trashSection: () => cy.get('#doc_tree_trash'),
-        chooseAllBtn: () => cy.get('.icon-checkb'),
-        deleteBtn: () => cy.get('.icon16-Trash'),
+        createdDocument: (filename) => cy.get('.GCSDBRWBGT .GCSDBRWBAKB[title="' + filename + '"]'),
     }
 
     rightclickOfCreatedDocument(filename) {
-        this.elements.сreatedDocument(filename).scrollIntoView().rightclick();
+        this.elements.createdDocument(filename).scrollIntoView().rightclick();
     }
 
     clickSendBtn() {
@@ -21,6 +25,9 @@ class DocumentsPage extends BaseSectionPage {
     sendEmailWithAttachedFile(filename) {
         this.rightclickOfCreatedDocument(filename);
         this.clickSendBtn();
+    }
+    clickDocumentsTrashBtn() {
+        this.elements.trashSection().click();
     }
 }
 
